@@ -58,4 +58,32 @@ class CategoryController extends Controller
     {
     return  new CategoryResource($category);
     }
+
+    public function update(Category $category, Request $request)
+    {
+        // Menangani kategori yang tidak ditemukan
+        if (!$category) {
+            return response()->json([
+                'message' => 'Category not found.',
+            ], 404);
+        }
+    
+        $validatedData = $request->validate([
+            'category_name' => 'required|unique:categories,category_name,' . $category->id,
+        ]);
+    
+        try {
+            $category->update($validatedData);
+    
+            return response()->json([
+                'status' => 200,
+                'message' => 'Category Berhasil Diperbarui',
+            ], 200);
+        } catch (QueryException $e) {
+            // Memberikan pesan kesalahan yang lebih spesifik
+            return response()->json([
+                'message' => 'Failed to update category. ' . $e->getMessage(),
+            ]);
+        }
+    }
 }

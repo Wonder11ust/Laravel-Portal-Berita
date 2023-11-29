@@ -31,7 +31,6 @@ class ArticleController extends Controller
     public function index()
     {
         $perPage = 7; // Sesuaikan dengan jumlah artikel per halaman yang Anda inginkan
-    
 
         // Gunakan filter untuk mencari artikel berdasarkan 'search' dan 'category'
         $articles = Article::latest()
@@ -92,10 +91,7 @@ class ArticleController extends Controller
 
     public function update(Article $article,Request $request)
     {
-       
-
-
-        $validatedData = $request->validate([
+           $validatedData = $request->validate([
             'title'=>'required|unique:articles',
             'slug'=>'required|unique:articles',
             'content'=>'required',

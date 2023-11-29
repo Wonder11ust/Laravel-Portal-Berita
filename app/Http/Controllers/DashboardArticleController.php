@@ -42,28 +42,17 @@ class DashboardArticleController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:articles',
-            'slug' => 'required|unique:articles',
+            'slug' => 'nullable|unique:articles',
             'content' => 'required',
             'category' => 'required|array',
             'image_url'=>'required',
           
         ]);
-        // $image = '';
-
-        // if ($request->file) {
-        //     $fileName = $this->generateRandomString();
-        //     $extension = $request->file->extension();
-        //     $image =$fileName.'.'.$extension;
-        //     Storage::putFileAs('image', $request->file,$image);
-        // }
-        // $request['image_url']= $image;
-        // $validatedData['image_url'] = $request['image_url'];
+    
 
         $validatedData['user_id'] = Auth::user()->id;
-     //   $validatedData['user_id'] = 4;
-    
-    
-       
+        $validatedData['slug'] = $this->slug($validatedData['title']);
+
         // Buat artikel
         $article = Article::create($validatedData);
     
@@ -111,7 +100,6 @@ class DashboardArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
-
         $rules = [
             'title' => 'required|max:255',
             'category' => 'required|array',
@@ -129,7 +117,14 @@ class DashboardArticleController extends Controller
 
        // Article::where('id',$article->id)->update($validatedData);
      $article->update($validatedData);
-     $article->categories()->sync($request->category);
+     $existingCategories = array_unique($article->categories->pluck('id')->toArray());
+     $requestCategories = array_unique($request->category);
+     $categoriesToAdd = array_diff($requestCategories,$existingCategories);
+     $categoriesToRemove = array_diff($existingCategories,$requestCategories);
+     $article->categories()->attach($categoriesToAdd);
+     $article->categories()->detach($categoriesToRemove);
+
+     //$article->categories()->sync($request->category);
 
         return response()->json([
             'status'=>200,
@@ -158,6 +153,20 @@ class DashboardArticleController extends Controller
         }
         return $randomString;
     }
+
+    public function slug($title)
+{
+    // Menghapus karakter khusus
+    $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $title);
+
+    // Mengonversi ke huruf kecil
+    $slug = strtolower($slug);
+
+    // Menghapus strip di awal dan akhir
+    $slug = trim($slug, '-');
+
+    return $slug;
+}
 
    
 }
