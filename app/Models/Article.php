@@ -9,10 +9,10 @@ class Article extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-    protected $with = ['comments','user'];
-    public function user()
+   // protected $with = ['comments','user'];
+    public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id','id');
     }
 
     public function categories()
@@ -25,11 +25,13 @@ class Article extends Model
         return $this->hasMany(Comment::class,'article_id');
     }
 
+  
     public function scopeFilter($query,array $filters)
     {
         $query->when($filters['search'] ?? false,function($query,$search){
             return $query->where('title','like','%'.$search.'%')
-            ->orWhere('content','like','%'.$search.'%');
+            ->orWhere('content','like','%'.$search.'%')
+            ->orWhere('slug','like','%'.$search.'%');
         });
 
         $query->when($filters['category']  ?? false,function($query,$category){

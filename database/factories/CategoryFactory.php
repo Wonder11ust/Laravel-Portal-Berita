@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ArticleCategory>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
  */
-class ArticleCategoryFactory extends Factory
+class CategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,8 @@ class ArticleCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'category_id'=>mt_rand(1,5),
-            'article_id'=>mt_rand(20,26),
+            'category_name'=>  $this->faker->sentence(mt_rand(2,8)),
+            'category_image'=>$this->faker->sentence(mt_rand(2,8)),
         ];
     }
 }

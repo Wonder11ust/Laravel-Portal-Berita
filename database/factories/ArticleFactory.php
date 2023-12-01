@@ -21,7 +21,7 @@ class ArticleFactory extends Factory
             'slug'=>$this->faker->slug(),
             'image_url'=>$this->faker->imageUrl(200,120,'web-design',true),
             'content'=>collect($this->faker->paragraph(mt_rand(5,10)))->map(fn($p)=>"<p>$p</p>")->implode(""),
-            'user_id'=>mt_rand(8,9)
+            'user_id'=>mt_rand(1,3)
         ];
     }
 }

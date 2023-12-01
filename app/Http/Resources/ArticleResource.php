@@ -21,7 +21,7 @@ class ArticleResource extends JsonResource
             'slug'=>$this->slug,
             'content'=>$this->content,
             'image_url'=>$this->image_url,
-            'author'=>$this->user,
+            'author'=>$this->author,
             'views'=>$this->views,
             'created_at'=>date_format($this->created_at,"d-M-Y"),
         ];

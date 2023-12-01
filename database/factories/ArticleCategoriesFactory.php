@@ -18,7 +18,7 @@ class ArticleCategoriesFactory extends Factory
     {
         return [
             'category_id'=>mt_rand(1,5),
-            'article_id'=>mt_rand(20,26),
+            'article_id'=>mt_rand(1,10),
         ];
     }
 }

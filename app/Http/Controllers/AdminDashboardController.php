@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use App\Models\User;
 use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleDetailResource;
+
+use function PHPSTORM_META\map;
 
 class AdminDashboardController extends Controller
 {
@@ -17,10 +22,9 @@ class AdminDashboardController extends Controller
     {
       
         $articles = Article::all();
-        $art = ArticleResource::collection($articles);
         return response()->json([
             'status'=>200,
-            'articles'=>$art
+            'articles'=>$articles
         ],200);
     }
 
@@ -31,7 +35,7 @@ class AdminDashboardController extends Controller
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:articles',
-            'slug' => 'nullable|unique:articles',
+            'slug' => 'required|unique:articles',
             'content' => 'required',
             'category' => 'required|array',
             'image_url'=>'required',
@@ -40,7 +44,6 @@ class AdminDashboardController extends Controller
     
 
         $validatedData['user_id'] = Auth::user()->id;
-        $validatedData['slug'] = $this->slug($validatedData['title']);
 
         // Buat artikel
         $article = Article::create($validatedData);
@@ -60,11 +63,11 @@ class AdminDashboardController extends Controller
      */
     public function show(Article $article)
     {
-        $art =  new ArticleDetailResource($article);
-        //$comments = $article->comments;
+        $detail = Article::with(['author','comments'])->where('slug',$article->slug)->get();
          return response()->json([
              'status' => 200,
-             'article' => $art,      
+             'message'=>'Data Artikel',
+             'article' => $detail,      
          ]);
     }
 
@@ -73,50 +76,13 @@ class AdminDashboardController extends Controller
      */
     public function edit(Article $article)
     {
-        $art =  new ArticleDetailResource($article);
-        //$comments = $article->comments;
          return response()->json([
              'status' => 200,
-             'article' => $art,      
+             'message'=>'Edit Artikel',
+             'article' => $article,      
          ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-//     public function update(Request $request, Article $article)
-//     {
-
-//         $rules = [
-//             'title' => 'required|max:255',
-//             'category' => 'required|array',
-//             'image_url' => 'required',
-//             'content' => 'required'
-//         ];
-
-//         if ($request->slug != $article->slug) {
-//             $rules['slug'] = 'required|unique:articles';
-//         }
-
-//         $validatedData['user_id'] =Auth::user()->id;
-//         $validatedData = $request->validate($rules);
-       
-
-//        // Article::where('id',$article->id)->update($validatedData);
-//      $article->update($validatedData);
-//      $existingCategories = $article->categories()->pluck('id')->toArray();
-//      $categoriesToAdd = array_diff($request->category,$existingCategories);
-//      $categoriesToRemove = array_diff($existingCategories,$request->category);
-//      $article->categories()->attach($categoriesToAdd);
-//      $article->categories()->detach($categoriesToRemove);
-
-//    //  $article->categories()->sync($request->category);
-
-//         return response()->json([
-//             'status'=>200,
-//             'message'=>'Artikel Berhasil Di Update',
-//         ],200);
-//     }
 
 public function update(Request $request, Article $article)
 {
@@ -174,17 +140,112 @@ public function update(Request $request, Article $article)
         ]);
     }
 
-    public function slug($title)
+    public function users()
     {
-        // Menghapus karakter khusus
-        $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $title);
-    
-        // Mengonversi ke huruf kecil
-        $slug = strtolower($slug);
-    
-        // Menghapus strip di awal dan akhir
-        $slug = trim($slug, '-');
-    
-        return $slug;
+        $users =User::where('role_id','3')->get();
+        return response()->json([
+            'status'=>200,
+            'message'=>'Data User',
+            'user'=>$users
+        ]);
     }
+
+    public function writers()
+    {
+        $writers = User::where('role_id',2)->get();
+        return response()->json([
+            'status'=>200,
+            'message'=>'Data Writer',
+            'writer'=>$writers
+        ]);
+    }
+
+    public function addWriter(Request $request)
+    {
+        $validatedData = $request->validate([
+            'name'=>['required','max:255','unique:users'],
+            'email'=>['required','email','unique:users'],
+            'password'=> ['required']
+        ]);
+        $validatedData['role_id'] = 2;
+        $validatedData['password'] = Hash::make($request->password);
+
+        User::create($validatedData);
+
+        return response()->json([
+            'status'=>200,
+            'message'=>'Data Writer Berhasil Ditambahkan'
+        ],200);
+    }
+
+    public function editWriter(User $user)
+    {
+        $writer = User::where('role_id',2)->where('id',$user->id)->get();
+        return response()->json([
+            'status'=>200,
+            'writer'=>$writer
+        ]);
+    }
+
+    public function updateWriter(User $user, Request $request)
+{
+
+        $rules = [
+            "email" => "required|email|unique:users,email," . $user->id,
+            "password" => "nullable|max:100"
+        ];
+        if ($request->name != $user->name) {
+            $rules['name'] = "required|unique:users";
+        }
+
+        $validatedData = $request->validate($rules);
+
+    // Pastikan bahwa user memiliki role_id yang sesuai (2 untuk role writer)
+    if ($user->role_id !== 2) {
+        return response()->json([
+            'status' => 403,
+            'message' => 'Forbidden: Access denied for non-writer user.'
+        ], 403);
+    }
+
+    $user->update($validatedData);
+
+    return response()->json([
+        'status' => 200,
+        'message'=>'Data Writer Berhasil Diperbarui',
+        'writer' => $user
+    ]);
+}
+
+public function destroyWriter(User $user)
+{
+    try {
+        // Menggunakan transaksi untuk memastikan keberhasilan operasi
+        DB::beginTransaction();
+
+        // Hapus pengguna
+        $user->delete();
+
+        // Commit transaksi jika semua operasi berhasil
+        DB::commit();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'User dan Artikel Berhasil dihapus'
+        ]);
+    } catch (\Exception $e) {
+        // Rollback transaksi jika terjadi kesalahan
+        DB::rollback();
+
+        return response()->json([
+            'status' => 500,
+            'message' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()
+        ], 500);
+    }
+}
+
+
+
+
+
 }

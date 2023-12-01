@@ -25,39 +25,29 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
        $validatedData = $request->validate([
-            'category_name'=>'required|unique:categories'
+            'category_name'=>'required|unique:categories',
+            'category_image'=>'required'
         ]);
 
-        try {
             Category::create($validatedData);
              return response()->json([
                 'status'=>200,
                 'message'=>'Category Baru Berhasil ditambahkan',
         ],200);
-        } catch (QueryException $e) {
-            return response()->json([
-                'message'=>'Failed'.$e->errorInfo,
-
-            ]);
-        }
+        
     }
 
     public function show(Category $category)
     {
-        //$articles = $category->articles;
+        $articles = $category->articles;
         $categoryWithArticles = $category->load('articles');
 
         return response()->json([
             'status'=>200,
             'category'=>$categoryWithArticles,
-            // 'articles'=>$articles
         ]);
     }
 
-    public function show2(Category $category)
-    {
-    return  new CategoryResource($category);
-    }
 
     public function update(Category $category, Request $request)
     {
@@ -70,6 +60,7 @@ class CategoryController extends Controller
     
         $validatedData = $request->validate([
             'category_name' => 'required|unique:categories,category_name,' . $category->id,
+            'category_image'=>'nullable'
         ]);
     
         try {

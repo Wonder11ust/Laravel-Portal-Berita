@@ -9,13 +9,14 @@ class Comment extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+    protected $with = ['commentator'];
 
     public function article()
     {
         return $this->belongsTo(Article::class);
     }
 
-    public function user()
+    public function commentator()
     {
         return $this->belongsTo(User::class,'user_id','id');
     }

@@ -44,4 +44,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // public function savedArticles()
+    // {
+    //     return $this->belongsToMany(Article::class, 'saved_articles', 'user_id', 'article_id')
+    //         ->withTimestamps();
+    // }
 }

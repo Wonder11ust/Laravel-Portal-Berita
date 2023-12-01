@@ -21,7 +21,7 @@ class ArticleDetailResource extends JsonResource
         'slug'=>$this->slug,
         'image_url'=>$this->image_url,
         'content'=>$this->content,
-        'author'=>$this->user,
+        'author'=>$this->author,
         'categories'=>$this->categories,
        // 'comments'=>$this->comments,
        'views'=>$this->views,

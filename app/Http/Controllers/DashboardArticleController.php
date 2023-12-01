@@ -19,30 +19,18 @@ class DashboardArticleController extends Controller
     {
         $user = Auth::user()->id;
         $articles = Article::where('user_id',$user)->get();
-        $art = ArticleResource::collection($articles);
         return response()->json([
             'status'=>200,
-            'articles'=>$art
+            'articles'=>$articles
         ],200);
         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validatedData = $request->validate([
             'title' => 'required|unique:articles',
-            'slug' => 'nullable|unique:articles',
+            'slug' => 'required|unique:articles',
             'content' => 'required',
             'category' => 'required|array',
             'image_url'=>'required',
@@ -51,8 +39,6 @@ class DashboardArticleController extends Controller
     
 
         $validatedData['user_id'] = Auth::user()->id;
-        $validatedData['slug'] = $this->slug($validatedData['title']);
-
         // Buat artikel
         $article = Article::create($validatedData);
     
@@ -74,24 +60,25 @@ class DashboardArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $art =  new ArticleDetailResource($article);
-        //$comments = $article->comments;
+        $detail = Article::with(['comments','author'])->where('slug',$article->slug)->get();
          return response()->json([
              'status' => 200,
-             'article' => $art,      
+             'article' => $detail,      
          ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
+    
+    
+
     public function edit(Article $article)
     {
-        $art =  new ArticleDetailResource($article);
         //$comments = $article->comments;
          return response()->json([
              'status' => 200,
-             'article' => $art,      
+             'article' => $article,      
          ]);
     }
 
@@ -143,30 +130,6 @@ class DashboardArticleController extends Controller
             'message'=>'Data Artikel Berhasil dihapus'
         ]);
     }
-
-    function generateRandomString($length = 30) {
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[random_int(0, $charactersLength - 1)];
-        }
-        return $randomString;
-    }
-
-    public function slug($title)
-{
-    // Menghapus karakter khusus
-    $slug = preg_replace('/[^A-Za-z0-9-]+/', '-', $title);
-
-    // Mengonversi ke huruf kecil
-    $slug = strtolower($slug);
-
-    // Menghapus strip di awal dan akhir
-    $slug = trim($slug, '-');
-
-    return $slug;
-}
 
    
 }

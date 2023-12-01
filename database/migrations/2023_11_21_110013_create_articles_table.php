@@ -15,8 +15,10 @@ return new class extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('slug');
+            $table->string('image_url');
             $table->text('content');
-            $table->foreignId('user_id');  
+            $table->unsignedBigInteger('views')->default(0);
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');  
             $table->timestamps();
         });
     }

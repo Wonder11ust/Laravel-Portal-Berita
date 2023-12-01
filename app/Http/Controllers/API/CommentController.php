@@ -20,10 +20,11 @@ class CommentController extends Controller
         $comment =Comment::create($validatedData);
 
         //return response()->json();
-        return new CommentResource($comment->loadMissing(['user:id,name']));
-        // return response()->json([
-        //     'status'=>200,
-        //     'message'=> 'Komentar Baru Berhasil Ditambahkan'
-        // ]);
+        //return new CommentResource($comment->loadMissing(['commentator:id,name']));
+        return response()->json([
+            'status'=>200,
+            'message'=> 'Komentar Baru Berhasil Ditambahkan',
+            'comment'=>$comment
+        ]);
     }
 }
