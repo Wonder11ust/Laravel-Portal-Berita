@@ -18,7 +18,7 @@ class DashboardArticleController extends Controller
     public function index()
     {
         $user = Auth::user()->id;
-        $articles = Article::where('user_id',$user)->get();
+        $articles = Article::with('categories')->where('user_id',$user)->get();
         return response()->json([
             'status'=>200,
             'articles'=>$articles

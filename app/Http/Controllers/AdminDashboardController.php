@@ -21,7 +21,7 @@ class AdminDashboardController extends Controller
     public function index()
     {
       
-        $articles = Article::all();
+        $articles = Article::with('categories')->latest()->filter(request(['search']))->get();
         return response()->json([
             'status'=>200,
             'articles'=>$articles
