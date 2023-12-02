@@ -45,9 +45,9 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    // public function savedArticles()
-    // {
-    //     return $this->belongsToMany(Article::class, 'saved_articles', 'user_id', 'article_id')
-    //         ->withTimestamps();
-    // }
+    public function savedArticles()
+    {
+        return $this->belongsToMany(Article::class, 'saved_articles', 'user_id', 'article_id')
+            ->withTimestamps();
+    }
 }

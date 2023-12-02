@@ -12,8 +12,9 @@ class SavedArticleController extends Controller
 {
     public function index()
     {
-        
-        $savedArticles = SavedArticle::all();
+        $user = Auth::user();
+        // Mengambil semua artikel yang disimpan oleh pengguna
+        $savedArticles = $user->savedArticles;
     
         return response()->json([
             'status' => 200,
@@ -33,6 +34,16 @@ class SavedArticleController extends Controller
             'status' => 200,
             'message' => 'Artikel berhasil disimpan',
             'saved_article' => $savedArticle,
+        ]);
+    }
+
+    public function unsave(Article $article)
+    {
+     SavedArticle::where('user_id',Auth::user()->id)->where('article_id',$article->id)->delete();
+        return response()->json([
+            'status'=>200,
+            'message'=>'Artikel Berhasil Di Unsave',
+            
         ]);
     }
 }

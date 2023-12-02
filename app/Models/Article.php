@@ -25,6 +25,12 @@ class Article extends Model
         return $this->hasMany(Comment::class,'article_id');
     }
 
+    public function savedByUsers()
+    {
+        return $this->belongsToMany(User::class, 'saved_articles', 'article_id', 'user_id')
+            ->withTimestamps();
+    }
+
   
     public function scopeFilter($query,array $filters)
     {

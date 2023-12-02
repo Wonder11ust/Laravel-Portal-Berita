@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
@@ -93,6 +93,38 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        User::destroy($user->id);
+        return response()->json([
+            'status'=>200,
+            'message'=>"User Berhasil Dihapus"
+        ]);
     }
+
+    
+
+public function updatePassword(Request $request)
+{
+    $request->validate([
+        'current_password' => ['required', 'current_password'],
+        'password' => ['required', 'confirmed'],
+    ]);
+
+    // Periksa apakah current_password yang dimasukkan sesuai dengan password saat ini
+    if (!Hash::check($request->current_password, $request->user()->password)) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Password saat ini tidak valid.',
+        ], 400);
+    }
+
+    // Update password
+    $request->user()->update([
+        'password' => Hash::make($request->password),
+    ]);
+
+    return response()->json([
+        'status' => 'success',
+        'message' => 'Password berhasil diperbarui.',
+    ], 200);
+}
 }

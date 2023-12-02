@@ -84,7 +84,9 @@ Route::get('/account/{user:id}',[UserController::class,'show'])->middleware('aut
 Route::get('/account/edit/{user:id}',[UserController::class,'edit'])->middleware('auth:sanctum');
 Route::put('/account/update/{user:id}',[UserController::class,'update'])->middleware('auth:sanctum');
 Route::delete('/account/delete/{user:id}',[UserController::class,'delete'])->middleware('auth:sanctum');
+Route::put('/account/update-pass/{user:id}',[UserController::class,'updatePassword'])->middleware('auth:sanctum');
 
 //Save Article
 Route::post('/article/save/{article:slug}',[SavedArticleController::class,'save'])->middleware('auth:sanctum');
-Route::get('/article/saved',[SavedArticleController::class,'index'])->middleware('auth:sanctum');
+Route::post('/article/unsave/{article:slug}',[SavedArticleController::class,'unsave'])->middleware('auth:sanctum');
+Route::get('/saved',[SavedArticleController::class,'index'])->middleware('auth:sanctum');

@@ -180,7 +180,7 @@ public function update(Request $request, Article $article)
 
     public function editWriter(User $user)
     {
-        $writer = User::where('role_id',2)->where('id',$user->id)->get();
+        $writer = User::where('id',$user->id)->get();
         return response()->json([
             'status'=>200,
             'writer'=>$writer
@@ -201,12 +201,12 @@ public function update(Request $request, Article $article)
         $validatedData = $request->validate($rules);
 
     // Pastikan bahwa user memiliki role_id yang sesuai (2 untuk role writer)
-    if ($user->role_id !== 2) {
-        return response()->json([
-            'status' => 403,
-            'message' => 'Forbidden: Access denied for non-writer user.'
-        ], 403);
-    }
+    // if ($user->role_id !== 2) {
+    //     return response()->json([
+    //         'status' => 403,
+    //         'message' => 'Forbidden: Access denied for non-writer user.'
+    //     ], 403);
+    // }
 
     $user->update($validatedData);
 
