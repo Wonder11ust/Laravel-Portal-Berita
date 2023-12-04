@@ -37,5 +37,19 @@ class ArticleController extends Controller
     ]);
 }
 
+    public function highestViews()
+    {
+        $articles = Article::where('views', '>', 0)
+        ->orderByDesc('views') // Urutkan berdasarkan jumlah tampilan secara descending
+        ->limit(3)
+        ->get();
+
+        return response()->json([
+            'status'=>200,
+            'message'=>'Artikel Dengan Views Paling Banyak',
+            'views'=>$articles
+        ]);
+    }
+
 
 }

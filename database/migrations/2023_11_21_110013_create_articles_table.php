@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->string('image_url');
+            $table->text('image_url');
             $table->text('content');
             $table->unsignedBigInteger('views')->default(0);
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');  

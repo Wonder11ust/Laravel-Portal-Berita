@@ -9,6 +9,7 @@ use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\DashboardArticleController;
 use App\Http\Controllers\API\SavedArticleController;
 use App\Http\Controllers\UserController;
+use App\Models\Article;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -41,7 +42,7 @@ Route::get('/category/{category:id}',[CategoryController::class,'show']);
 // Article
 Route::get('/articles',[ArticleController::class,'index']);
 Route::get('/article/{article:slug}',[ArticleController::class,'show']);
-
+Route::get('/views',[ArticleController::class,'highestViews']);
 
 
 // Comment
