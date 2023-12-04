@@ -77,6 +77,12 @@ Route::get('/dashboard/admin/edit-writer/{user:id}',[AdminDashboardController::c
 Route::post('/dashboard/admin/add-writer',[AdminDashboardController::class,'addWriter']);
 Route::put('/dashboard/admin/update-writer/{user:id}',[AdminDashboardController::class,'updateWriter']);
 Route::delete('/dashboard/admin/delete-writer/{user:id}',[AdminDashboardController::class,'destroyWriter']);
+
+// dashboard Admin total
+Route::get('/dashboard/admin/total-articles',[AdminDashboardController::class,'countArticles']);
+Route::get('/dashboard/admin/total-categories',[AdminDashboardController::class,'countCategories']);
+Route::get('/dashboard/admin/total-writers',[AdminDashboardController::class,'countWriters']);
+Route::get('/dashboard/admin/total-users',[AdminDashboardController::class,'countUsers']);
 });
 
 //User Detail

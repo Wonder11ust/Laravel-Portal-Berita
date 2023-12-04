@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleDetailResource;
+use App\Models\Category;
 
 use function PHPSTORM_META\map;
 
@@ -63,7 +64,7 @@ class AdminDashboardController extends Controller
      */
     public function show(Article $article)
     {
-        $detail = Article::with(['author','comments'])->where('slug',$article->slug)->get();
+        $detail = Article::with(['author','comments','categories'])->where('slug',$article->slug)->get();
          return response()->json([
              'status' => 200,
              'message'=>'Data Artikel',
@@ -242,6 +243,39 @@ public function destroyWriter(User $user)
             'message' => 'Terjadi kesalahan saat menghapus data: ' . $e->getMessage()
         ], 500);
     }
+}
+
+public function countArticles()
+{
+    $totalArticles = Article::count();
+    return response()->json([
+        'status'=>200,
+        'total'=>$totalArticles
+    ]);
+}
+public function countCategories()
+{
+    $totalCategories = Category::count();
+    return response()->json([
+        'status'=>200,
+        'total'=>$totalCategories
+    ]);
+}
+public function countWriters()
+{
+    $totalWriter = User::where('role_id','=','2')->count();
+    return response()->json([
+        'status'=>200,
+        'total'=>$totalWriter
+    ]);
+}
+public function countUsers()
+{
+    $totalUser = User::where('role_id','=','3')->count();
+    return response()->json([
+        'status'=>200,
+        'total'=>$totalUser
+    ]);
 }
 
 

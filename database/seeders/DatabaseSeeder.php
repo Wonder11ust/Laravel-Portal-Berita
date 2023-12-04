@@ -103,7 +103,7 @@ class DatabaseSeeder extends Seeder
         Article::create([
             'title' => 'Pria Ditemukan Tewas di Jakarta Timur, Polisi: Diduga Akibat Perkelahian',
             'slug' => 'pria-ditemukan-tewas-di-jakarta-timur-polisi-diduga-akibat-perkelahian',
-            'image_url' => 'https://example.com/image1.jpg',
+            'image_url' => 'https://img.okezone.com/content/2016/07/13/338/1436903/polisi-temukan-pisau-untuk-membunuh-alika-di-hotel-elysta-9vnhojNzZF.jpg',
             'content' => "Jakarta - Polisi tengah menyelidiki kematian seorang pria yang ditemukan tewas di kawasan Jakarta Timur. Menurut informasi awal, dugaan sementara mengarah pada akibat perkelahian.
         
             'Kami sedang memeriksa keterangan saksi dan mengumpulkan bukti terkait insiden ini,' ujar Kapolres Jakarta Timur, Komisaris Agus Santoso.
@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
         Article::create([
             'title' => 'Gempa Magnitudo 5.0 Guncang Bali, Warga Panik Berhamburan ke Luar Rumah',
             'slug' => 'gempa-magnitudo-5-0-guncang-bali-warga-panik-berhamburan-ke-luar-rumah',
-            'image_url' => 'https://example.com/image2.jpg',
+            'image_url' => 'https://media-assets-ggwp.s3.ap-southeast-1.amazonaws.com/2017/04/cv-earthshaker-1-696x385.jpg',
             'content' => "Bali - Guncangan gempa dengan magnitudo 5.0 mengguncang pulau Bali, menimbulkan kepanikan di kalangan warga. Beberapa wilayah melaporkan kerusakan ringan pada beberapa bangunan.
         
             'Gempa terjadi sekitar pukul 08.30 pagi hari ini. Warga langsung berhamburan ke luar rumah karena merasa getaran yang cukup kuat,' kata Kepala Badan Meteorologi dan Geofisika (BMKG) Bali, I Gusti Ngurah Putra.

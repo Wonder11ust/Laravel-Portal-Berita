@@ -60,7 +60,7 @@ class DashboardArticleController extends Controller
      */
     public function show(Article $article)
     {
-        $detail = Article::with(['comments','author'])->where('slug',$article->slug)->get();
+        $detail = Article::with(['comments','author','categories'])->where('slug',$article->slug)->get();
          return response()->json([
              'status' => 200,
              'article' => $detail,      

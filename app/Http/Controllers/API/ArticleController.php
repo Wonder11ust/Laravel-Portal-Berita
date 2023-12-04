@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\ArticleCategories;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ArticleCollection;
 use App\Http\Resources\ArticleDetailResource;
@@ -30,7 +31,7 @@ class ArticleController extends Controller
     public function show(Article $article)
 {
     $article->increment('views');
-    $detail = Article::with(['comments','author'])->where('slug',$article->slug)->get();
+    $detail = Article::with(['comments','author','categories'])->where('slug',$article->slug)->get();
     return response()->json([
         'status' => 200,
         'article' => $detail,      
@@ -43,6 +44,13 @@ class ArticleController extends Controller
         ->orderByDesc('views') // Urutkan berdasarkan jumlah tampilan secara descending
         ->limit(3)
         ->get();
+
+    //  $articles =   Cache::remember('articles',3,function(){
+    //         return Article::where('views', '>', 0)
+    //         ->orderByDesc('views') // Urutkan berdasarkan jumlah tampilan secara descending
+    //         ->limit(3)
+    //         ->get();
+    //     });
 
         return response()->json([
             'status'=>200,
