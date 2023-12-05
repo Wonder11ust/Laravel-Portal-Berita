@@ -103,7 +103,7 @@ class DatabaseSeeder extends Seeder
         Article::create([
             'title' => 'Pria Ditemukan Tewas di Jakarta Timur, Polisi: Diduga Akibat Perkelahian',
             'slug' => 'pria-ditemukan-tewas-di-jakarta-timur-polisi-diduga-akibat-perkelahian',
-            'image_url' => 'https://img.okezone.com/content/2016/07/13/338/1436903/polisi-temukan-pisau-untuk-membunuh-alika-di-hotel-elysta-9vnhojNzZF.jpg',
+            'image_url' => 'https://images.unsplash.com/photo-1600183952608-82f89b735562?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fGtpbGxlcnxlbnwwfHwwfHx8MA%3D%3D',
             'content' => "Jakarta - Polisi tengah menyelidiki kematian seorang pria yang ditemukan tewas di kawasan Jakarta Timur. Menurut informasi awal, dugaan sementara mengarah pada akibat perkelahian.
         
             'Kami sedang memeriksa keterangan saksi dan mengumpulkan bukti terkait insiden ini,' ujar Kapolres Jakarta Timur, Komisaris Agus Santoso.
@@ -160,7 +160,7 @@ class DatabaseSeeder extends Seeder
         Article::create([
             'title' => 'The International 2023',
             'slug' => 'the-international-2023',
-            'image_url' => 'https://liquipedia.net/commons/images/thumb/c/c3/The_International_2023_lightmode.png/900px-The_International_2023_lightmode.png',
+            'image_url' => 'https://hawk.live/storage/post-images/international-2023-raspisanie-matchej-3789.jpg',
             'content' => "The International Dota 2 Championships 2023 (also commonly called TI 2023 or TI 12) is the concluding tournament of the current season of Dota Pro Circuit and the twelfth annual edition of The International which will take place at Seattle, Washington. The invite format is similar to the one used for the preceding International, whereby a point system based on official sponsored Regional Leagues and Majors will be used to determine the teams invited to The International.
 
             Unlike previous years, The International for this year is split into two distinct phases: The group stage and playoffs (until top 8) are branded as The Road to The International, while the playoffs for the remaining 8 teams are branded as The International itself.
@@ -171,7 +171,7 @@ class DatabaseSeeder extends Seeder
         Article::create([
             'title' => 'LOL The World 2023',
             'slug' => 'lol-the-world-2023',
-            'image_url' => 'https://liquipedia.net/commons/images/thumb/8/87/LoL_World_Championship_2023_lightmode.png/900px-LoL_World_Championship_2023_lightmode.png',
+            'image_url' => 'https://images.contentstack.io/v3/assets/bltad9188aa9a70543a/bltf31ce24f9b72c5e7/64f905599e7ba645b7ca960d/w23-primer-header_img-v1.0.jpg?width=3200&height=1800',
             'content' => "The League of Legends World Championship 2023 (also known as LoL Worlds 2023 or just Worlds 2023) is the crowning event of League of Legends esports for the year. The tournament includes 22 teams from all regions of the game in a months-long race for the Summoner's Cup.
 
             For this Worlds tournament Riot introduced a Swiss Format which will be replacing the Group Stage of previous years, and a new qualifying series to determine the last spot between 4th Seed of Europe and North America.",
